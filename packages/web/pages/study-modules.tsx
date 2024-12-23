@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { StudyModule } from '../components/StudyModule';
+
+type StudyModule = {
+    id: number;
+    name: string;
+    description: string;
+};
 
 const StudyModules = () => {
-  const [modules, setModules] = useState([]);
+    const [modules, setModules] = useState<StudyModule[]>([]);
 
-  useEffect(() => {
-    // Fetch data from the backend API
-    axios.get('/api/study-modules')
-      .then(response => setModules(response.data))
-      .catch(error => console.error('Error fetching study modules:', error));
-  }, []);
+    useEffect(() => {
+        axios.get<StudyModule[]>('/api/study-modules') 
+            .then(response => setModules(response.data))
+            .catch(error => console.error('Error fetching study modules:', error));
+    }, []);
 
-  return (
-    <div>
-      <h1>Study Modules</h1>
-      {modules.map(module => (
-        <StudyModule key={module.id} title={module.title} description={module.description} />
-      ))}
-    </div>
-  );
+    return (
+        <div>
+            {modules.map(module => (
+                <div key={module.id}>
+                    <h2>{module.name}</h2>
+                    <p>{module.description}</p>
+                </div>
+            ))}
+        </div>
+    );
 };
 
 export default StudyModules;
