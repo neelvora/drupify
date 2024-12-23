@@ -1,1 +1,1 @@
-// Placeholder for completing monorepo setup
+// Adding scripts for monorepo
