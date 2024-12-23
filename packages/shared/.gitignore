@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+
+# TypeScript
+*.tsbuildinfo
+.cache/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Build artifacts
+dist/
+temp/
+.tmp/
+
+# dotenv environment variable files
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.sublime-workspace

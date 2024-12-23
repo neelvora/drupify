@@ -1,7 +1,9 @@
-# compiled output
+# Compiled output
 /dist
-/node_modules
 /build
+/node_modules
+.cache
+*.tsbuildinfo
 
 # Logs
 logs
@@ -14,6 +16,7 @@ lerna-debug.log*
 
 # OS
 .DS_Store
+Thumbs.db
 
 # Tests
 /coverage
@@ -37,9 +40,7 @@ lerna-debug.log*
 
 # dotenv environment variable files
 .env
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
 .env.local
 
 # temp directory
@@ -54,3 +55,11 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Monorepo specifics
+/packages/backend/node_modules
+
+# Other transient files
+.npm
+.yarn-integrity
+.idea/
