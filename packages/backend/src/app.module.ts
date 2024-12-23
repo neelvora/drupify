@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GamificationModule } from './gamification/gamification.module';
+import { StudyModulesModule } from './study-modules/study-modules.module';
+import { StudyModule } from './study-modules/entities/study-module.entity';
 
 @Module({
   imports: [
@@ -13,11 +15,12 @@ import { GamificationModule } from './gamification/gamification.module';
       username: 'neelvora',
       password: '',
       database: 'drupify',
-      entities: [],
-      synchronize: true,
-      logging: true,
+      entities: [StudyModule],
+      synchronize: true, // Auto-sync schema in development (disable in production)
+      logging: true, // Enables query logging
     }),
     GamificationModule,
+    StudyModulesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
