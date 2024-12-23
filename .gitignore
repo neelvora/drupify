@@ -39,3 +39,6 @@ yarn-error.log*
 *.swp
 *.tmp
 *.lock
+
+# Next.js build and cache
+.next/
