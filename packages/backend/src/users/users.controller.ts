@@ -6,11 +6,14 @@ import {
   Param,
   Put,
   Delete,
+  UseFilters,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 
 @Controller('users')
+@UseFilters(HttpExceptionFilter)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

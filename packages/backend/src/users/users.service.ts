@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -11,6 +11,9 @@ export class UsersService {
   ) {}
 
   async create(user: Partial<User>): Promise<User> {
+    if (!user.name || !user.email) {
+      throw new BadRequestException('Name and email are required');
+    }
     const newUser = this.userRepository.create(user);
     return this.userRepository.save(newUser);
   }
@@ -29,6 +32,9 @@ export class UsersService {
 
   async update(id: string, updateUser: Partial<User>): Promise<User> {
     const user = await this.findOne(id);
+    if (updateUser.email && !updateUser.email.includes('@')) {
+      throw new BadRequestException('Invalid email format');
+    }
     Object.assign(user, updateUser);
     return this.userRepository.save(user);
   }
