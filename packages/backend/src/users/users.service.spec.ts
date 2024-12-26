@@ -42,10 +42,44 @@ describe('UsersService', () => {
   it('should create a user', async () => {
     const user = new User();
     user.name = 'Test User';
-    user.email = 'test@example.com';
-    const savedUser = await repository.save(user);
+    user.email = 'unique1@example.com';
+    const savedUser = await service.create(user);
     expect(savedUser).toHaveProperty('id');
     expect(savedUser.name).toBe('Test User');
-    expect(savedUser.email).toBe('test@example.com');
+    expect(savedUser.email).toBe('unique1@example.com');
+  });
+
+  it('should find all users', async () => {
+    const users = await service.findAll();
+    expect(users).toBeInstanceOf(Array);
+  });
+
+  it('should find one user', async () => {
+    const user = new User();
+    user.name = 'Test User';
+    user.email = 'unique2@example.com';
+    const savedUser = await service.create(user);
+    const foundUser = await service.findOne(savedUser.id);
+    expect(foundUser).toHaveProperty('id');
+    expect(foundUser.name).toBe('Test User');
+    expect(foundUser.email).toBe('unique2@example.com');
+  });
+
+  it('should update a user', async () => {
+    const user = new User();
+    user.name = 'Test User';
+    user.email = 'unique3@example.com';
+    const savedUser = await service.create(user);
+    const updatedUser = await service.update(savedUser.id, { name: 'Updated User' });
+    expect(updatedUser.name).toBe('Updated User');
+  });
+
+  it('should remove a user', async () => {
+    const user = new User();
+    user.name = 'Test User';
+    user.email = 'unique4@example.com';
+    const savedUser = await service.create(user);
+    await service.remove(savedUser.id);
+    await expect(service.findOne(savedUser.id)).rejects.toThrow();
   });
 });
