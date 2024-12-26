@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GamificationModule } from './gamification/gamification.module';
 import { StudyModulesModule } from './study-modules/study-modules.module';
-import { StudyModule } from './study-modules/entities/study-module.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -15,12 +15,13 @@ import { StudyModule } from './study-modules/entities/study-module.entity';
       username: 'neelvora',
       password: '',
       database: 'drupify',
-      entities: [StudyModule],
-      synchronize: true, // Auto-sync schema in development (disable in production)
-      logging: true, // Enables query logging
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+      logging: true,
     }),
     GamificationModule,
     StudyModulesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
