@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { Progress } from '../progress/entities/progress.entity';
+import { StudyModule } from '../study-modules/entities/study-module.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -25,10 +27,10 @@ describe('UsersService', () => {
           username: 'neelvora',
           password: '',
           database: 'drupify',
-          entities: [User],
+          entities: [User, Progress, StudyModule],
           synchronize: true,
         }),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, Progress, StudyModule]),
       ],
       providers: [UsersService],
     }).compile();
@@ -72,7 +74,9 @@ describe('UsersService', () => {
   });
 
   it('should throw NotFoundException when finding a non-existing user', async () => {
-    await expect(service.findOne('00000000-0000-0000-0000-000000000000')).rejects.toThrow(NotFoundException);
+    await expect(
+      service.findOne('00000000-0000-0000-0000-000000000000'),
+    ).rejects.toThrow(NotFoundException);
   });
 
   it('should update a user', async () => {
@@ -80,7 +84,9 @@ describe('UsersService', () => {
     user.name = 'Test User';
     user.email = `unique-${uuidv4()}@example.com`;
     const savedUser = await service.create(user);
-    const updatedUser = await service.update(savedUser.id, { name: 'Updated User' });
+    const updatedUser = await service.update(savedUser.id, {
+      name: 'Updated User',
+    });
     expect(updatedUser.name).toBe('Updated User');
   });
 
@@ -89,7 +95,9 @@ describe('UsersService', () => {
     user.name = 'Test User';
     user.email = `unique-${uuidv4()}@example.com`;
     const savedUser = await service.create(user);
-    await expect(service.update(savedUser.id, { email: 'invalid-email' })).rejects.toThrow(BadRequestException);
+    await expect(
+      service.update(savedUser.id, { email: 'invalid-email' })
+    ).rejects.toThrow(BadRequestException);
   });
 
   it('should remove a user', async () => {
@@ -98,6 +106,8 @@ describe('UsersService', () => {
     user.email = `unique-${uuidv4()}@example.com`;
     const savedUser = await service.create(user);
     await service.remove(savedUser.id);
-    await expect(service.findOne(savedUser.id)).rejects.toThrow(NotFoundException);
+    await expect(service.findOne(savedUser.id)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });

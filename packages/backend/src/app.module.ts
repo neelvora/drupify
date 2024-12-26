@@ -5,6 +5,10 @@ import { AppService } from './app.service';
 import { GamificationModule } from './gamification/gamification.module';
 import { StudyModulesModule } from './study-modules/study-modules.module';
 import { UsersModule } from './users/users.module';
+import { ProgressModule } from './progress/progress.module';
+import { User } from './users/entities/user.entity';
+import { StudyModule } from './study-modules/entities/study-module.entity';
+import { Progress } from './progress/entities/progress.entity';
 
 @Module({
   imports: [
@@ -15,13 +19,14 @@ import { UsersModule } from './users/users.module';
       username: 'neelvora',
       password: '',
       database: 'drupify',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [User, StudyModule, Progress],
       synchronize: true,
       logging: true,
     }),
     GamificationModule,
     StudyModulesModule,
     UsersModule,
+    ProgressModule,
   ],
   controllers: [AppController],
   providers: [AppService],

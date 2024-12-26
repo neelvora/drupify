@@ -1,9 +1,5 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Progress } from '../../progress/entities/progress.entity';
 
 @Entity()
 export class User {
@@ -13,9 +9,9 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ unique: true })
+  @Column()
   email: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @OneToMany(() => Progress, (progress) => progress.user)
+  progress: Progress[];
 }

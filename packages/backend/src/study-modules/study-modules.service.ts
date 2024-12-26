@@ -2,8 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StudyModule } from './entities/study-module.entity';
-import { CreateStudyModuleDto } from './dto/create-study-module.dto';
-import { UpdateStudyModuleDto } from './dto/update-study-module.dto';
 
 @Injectable()
 export class StudyModulesService {
@@ -12,31 +10,34 @@ export class StudyModulesService {
     private readonly studyModuleRepository: Repository<StudyModule>,
   ) {}
 
-  async create(createStudyModuleDto: CreateStudyModuleDto) {
-    const newModule = this.studyModuleRepository.create(createStudyModuleDto);
+  async create(studyModule: Partial<StudyModule>): Promise<StudyModule> {
+    const newModule = this.studyModuleRepository.create(studyModule);
     return this.studyModuleRepository.save(newModule);
   }
 
-  findAll() {
+  findAll(): Promise<StudyModule[]> {
     return this.studyModuleRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string): Promise<StudyModule> {
     const module = await this.studyModuleRepository.findOne({ where: { id } });
     if (!module) {
-      throw new NotFoundException(`Study module with ID ${id} not found`);
+      throw new NotFoundException(`Module with ID ${id} not found`);
     }
     return module;
   }
 
-  async update(id: number, updateStudyModuleDto: UpdateStudyModuleDto) {
+  async update(
+    id: string,
+    updateStudyModule: Partial<StudyModule>,
+  ): Promise<StudyModule> {
     const module = await this.findOne(id);
-    Object.assign(module, updateStudyModuleDto);
+    Object.assign(module, updateStudyModule);
     return this.studyModuleRepository.save(module);
   }
 
-  async remove(id: number) {
+  async remove(id: string): Promise<void> {
     const module = await this.findOne(id);
-    return this.studyModuleRepository.remove(module);
+    await this.studyModuleRepository.remove(module);
   }
 }
