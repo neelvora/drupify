@@ -1,13 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Progress } from '../../progress/entities/progress.entity';
 
 @Entity()
 export class StudyModule {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
 
-  @Column({ nullable: true })
-  description?: string;
+  @Column()
+  description: string;
+
+  @OneToMany(() => Progress, (progress) => progress.module)
+  progress: Progress[];
 }
